@@ -25,7 +25,8 @@ val scalabridge = Project("scalabridge", file("."))
       |import java.util.Timer
       |import doodle.image.syntax._
       |import org.apache.commons.codec.binary
-      |impoort scala.io.Source
+      |import scala.io.Source
+      |import org.json4s.JsonDSL._
      """.trim.stripMargin,
 
     resolvers += Resolver.sonatypeRepo("releases"),
@@ -39,6 +40,9 @@ val scalabridge = Project("scalabridge", file("."))
       "org.creativescala" %% "doodle" % "0.9.3",
       //ApacheCommons Codec
       "commons-codec" % "commons-codec" % "1.12",
+      //JSON4S
+      "org.json4s" %% "json4s-native" % "3.6.6",
+      "com.danielasfregola" %% "twitter4s" % "6.1",
     ),
     // Some compiler flags which are good defaults
     scalacOptions ++= Seq(
