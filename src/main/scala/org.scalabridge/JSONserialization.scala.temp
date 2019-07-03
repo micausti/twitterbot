@@ -1,0 +1,48 @@
+   abstract class MediaUpload() {
+      def media_data: String
+    }
+
+    abstract class StatusUpdate() {
+      def status: String
+
+      def media_ids: String //I think this actually needs to be a long, not sure how
+    }
+
+    sealed trait JsValue {
+      def stringify: String
+    }
+
+    final case class JsObject(values: Map[String, JsValue]) extends JsValue {
+      def stringify = values.map {
+        case (name, value) => "\"" + name + "\":" + value.stringify
+      }
+        .mkString("{", ",", "}")
+    }
+
+    final case class JsString(value: String) extends JsValue {
+      def stringify = "\"" + value.replaceAll("\\|\"", "\\\\$1" + "\"")
+    }
+
+    //val obj = JsObject(Map("foo" -> JsString("a"), "bar" -> JsString("b"), "baz" ->JsString("c"))
+
+
+    trait JsWriter[A] {
+      def write(value: A): JsValue
+    }
+
+    object JsUtil {
+      def toJson[A](value: A)(implicit writer: JsWriter[A]) =
+        writer write value
+    }
+
+    implicit object MediaUploadWriter extends JsWriter[MediaUpload] {
+      def write(value: MediaUpload) = JsObject(Map(
+        "media_data" -> JsString(value.media_data)))
+    }
+
+    implicit object StatusUpdateWriter extends JsWriter[StatusUpdate] {
+      def write(value: StatusUpdate) = JsObject(Map(
+        "status" -> JsString(value.status),
+        "media_ids" -> JsString(value.media_ids),
+      ))
+    }

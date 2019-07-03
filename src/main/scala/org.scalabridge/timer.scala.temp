@@ -1,0 +1,17 @@
+package org.scalabridge
+
+import doodle.core._
+import doodle.effect.Writer._
+import doodle.image.syntax._
+
+
+object ImageTimer {
+
+  val t = new java.util.Timer()
+  val task = new java.util.TimerTask {
+    def run() = Make.randomGradientLoop(30, Color.pink, 2).run.write[Png]("newimg.png")
+  }
+  t.schedule(task, 1000L, 1000L)
+  //task.cancel()
+
+}

@@ -1,0 +1,18 @@
+# sbt
+.cache
+.history
+.lib/
+dist/*
+target/
+lib_managed/
+src_managed/
+project/boot/
+project/plugins/project/
+default/
+# IntelliJ
+.idea
+*.iml
+out
+
+# Service
+*.log
