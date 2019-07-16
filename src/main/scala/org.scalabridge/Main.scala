@@ -17,6 +17,7 @@ import java.time.DayOfWeek
 import java.util.{Timer, TimerTask}
 import java.util.Calendar
 import java.util.UUID.randomUUID
+import java.util.concurrent.TimeUnit
 
 import com.danielasfregola.twitter4s.TwitterRestClient
 import com.danielasfregola.twitter4s.entities.{AccessToken, ConsumerToken}
@@ -32,6 +33,8 @@ object Main {
     val accessToken = AccessToken(key = "3317308574-mgg8AWsjQoLhReURzpIZ3htV9t3dMfsNNEBcvBF", secret = "GOyWnhDoq8imihe47y2E6BsTrLvOxQjz3P2HKlAZkHdrA")
     val restClient = TwitterRestClient(consumerToken, accessToken)
     implicit val ec = ExecutionContext.global
+
+    println("DEBUG: break1")
 
 
     //building blocks for the images
@@ -92,8 +95,10 @@ object Main {
           val id = randomUUID().toString
           val newName = id.concat(".png")
         }
-        val filePath = "/Users/michelleaustin/twitterbot_imagefiles/" + fileName.newName
+        val filePath = "/tmp/" + fileName.newName
+        println(s"file path $filePath")
         dayImage(50, nextColor(Color.crimson).run, r.nextInt(10), dayToString(today)).run.write[Png](filePath)
+        println("created path")
         for {
           upload <- restClient.uploadMediaFromPath(filePath)
           tweet <- restClient.createTweet("Happy " + today + "!", media_ids = Seq(upload.media_id))
@@ -101,17 +106,21 @@ object Main {
       }
     }
 
+    println("DEBUG: breakpoint2")
+
     //set the timer for the tweet task
-    now.set(Calendar.HOUR_OF_DAY, 14)
-    now.set(Calendar.MINUTE, 38)
+    now.set(Calendar.HOUR_OF_DAY, 11)
+    now.set(Calendar.MINUTE, 0)
     now.set(Calendar.SECOND, 0)
 
     //val oncePerDay = 1000*60*60*24
-    val oncePerDay = 1000*60
+    //val oncePerDay = 1000*60
 
     //schedule the tweet and repeat
-    t.schedule(task, 1000L, oncePerDay)
+    t.schedule(task,now.getTime(), TimeUnit.MILLISECONDS.convert(1, TimeUnit.DAYS))
+    //println(oncePerDay)
 
+    println("DEBUG: breakpoint3")
   }
 
 
