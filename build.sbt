@@ -43,6 +43,9 @@ val scalabridge = Project("scalabridge", file("."))
       //JSON4S
       "org.json4s" %% "json4s-native" % "3.6.6",
       "com.danielasfregola" %% "twitter4s" % "6.1",
+      //scala-logging
+      "com.typesafe.scala-logging" %% "scala-logging" % "3.9.2",
+      "ch.qos.logback" % "logback-classic" % "1.2.3",
     ),
     // Some compiler flags which are good defaults
     scalacOptions ++= Seq(
