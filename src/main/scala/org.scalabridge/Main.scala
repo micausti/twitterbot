@@ -28,8 +28,13 @@ import com.typesafe.scalalogging._
 object Main {
 
   def main(args: Array[String]): Unit = {
-    val newProcess  = new MyProcess
-    newProcess.execute(args)
+
+    val createTweet  = new MyProcess
+
+    val now = Calendar.getInstance()
+    val today = createTweet.today(createTweet.dayOfWeek(now))
+    println(today)
+
  }
 
 }

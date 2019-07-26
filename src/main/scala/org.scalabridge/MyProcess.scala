@@ -43,11 +43,26 @@ class MyProcess {
 
     case object Twitter {
       //set tokens for twitter4s
-      val logger = Logger("logger")
       val consumerToken = ConsumerToken(key = "wVEpDxPf1XRmvYmrZHgvULaGM", secret = "7q9Z1DuogwyZtdeYkkgxzkmIW8qTcfJRH0x9IXUFNw5gmJtNEs")
       val accessToken = AccessToken(key = "3317308574-mgg8AWsjQoLhReURzpIZ3htV9t3dMfsNNEBcvBF", secret = "GOyWnhDoq8imihe47y2E6BsTrLvOxQjz3P2HKlAZkHdrA")
       val restClient = TwitterRestClient(consumerToken, accessToken)
-      implicit val ec = ExecutionContext.global
+
+    }
+
+    def dayOfWeek (now: Calendar): Int = {
+       now.get(Calendar.DAY_OF_WEEK)
+    }
+
+    def today (dayOfWeek: Int): String = {
+      dayOfWeek match {
+        case 1 => "Sunday"
+        case 2 => "Monday"
+        case 3 => "Tuesday"
+        case 4 => "Wednesday"
+        case 5 => "Thursday"
+        case 6 => "Friday"
+        case 7 => "Saturday"
+      }
     }
 
     case object Date {
@@ -56,7 +71,7 @@ class MyProcess {
       val now = Calendar.getInstance()
       val currentDay = now.get(Calendar.DAY_OF_WEEK)
       val today = Date.weekDays(Date.currentDay-1)
-    }
+  }
 
     case object NewImage {
       //set vals for new image to generate
@@ -72,7 +87,7 @@ class MyProcess {
       val startTime = Date.now.getTime()
   }
 
-  
+
     def nextColor(color: Color): Random[Color] = {
       //building blocks for the imageS, selects the next color to be used
       val spin = Random.normal(15.0, 10.0)
@@ -117,14 +132,18 @@ class MyProcess {
       }
     }
 
-    def createTodayImage(): Unit= {
+
+
+/*    def createTodayImage(): Unit= {
       //create image and write to file
       dayImage(dayOfWeek = NewImage.imageForToday).run.write[Png](NewImage.filePath)
     }
-
+*/
     val task: TimerTask = new java.util.TimerTask {
       //queue up the tweet
       def run() = {
+        implicit val ec = ExecutionContext.global
+        dayImage(dayOfWeek = NewImage.imageForToday).run.write[Png](NewImage.filePath)
         for {
           upload <- Twitter.restClient.uploadMediaFromPath(NewImage.filePath)
           tweet <- Twitter.restClient.createTweet(NewImage.status, media_ids = Seq(upload.media_id))
@@ -135,7 +154,7 @@ class MyProcess {
     def scheduleTweet(task: TimerTask): Unit = {
     //schedule the tweet and repeat
     val t = new java.util.Timer()
-    t.schedule(task, ScheduleTime.startTime, ScheduleTime.repeatInterval)
+    t.schedule(task, Date.now.getTime(), TimeUnit.MILLISECONDS.convert(1, TimeUnit.DAYS))
   }
 
   }
