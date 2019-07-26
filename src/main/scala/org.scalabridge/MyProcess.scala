@@ -46,47 +46,11 @@ class MyProcess {
       val consumerToken = ConsumerToken(key = "wVEpDxPf1XRmvYmrZHgvULaGM", secret = "7q9Z1DuogwyZtdeYkkgxzkmIW8qTcfJRH0x9IXUFNw5gmJtNEs")
       val accessToken = AccessToken(key = "3317308574-mgg8AWsjQoLhReURzpIZ3htV9t3dMfsNNEBcvBF", secret = "GOyWnhDoq8imihe47y2E6BsTrLvOxQjz3P2HKlAZkHdrA")
       val restClient = TwitterRestClient(consumerToken, accessToken)
-
     }
 
-    def dayOfWeek (now: Calendar): Int = {
+    def getNumOfDay (now: Calendar): Int = {
        now.get(Calendar.DAY_OF_WEEK)
     }
-
-    def today (dayOfWeek: Int): String = {
-      dayOfWeek match {
-        case 1 => "Sunday"
-        case 2 => "Monday"
-        case 3 => "Tuesday"
-        case 4 => "Wednesday"
-        case 5 => "Thursday"
-        case 6 => "Friday"
-        case 7 => "Saturday"
-      }
-    }
-
-    case object Date {
-      //set vals for date properties
-      val weekDays = Seq("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday")
-      val now = Calendar.getInstance()
-      val currentDay = now.get(Calendar.DAY_OF_WEEK)
-      val today = Date.weekDays(Date.currentDay-1)
-  }
-
-    case object NewImage {
-      //set vals for new image to generate
-      val id = randomUUID().toString
-      val newName = id.concat(".png")
-      val filePath = "/tmp/" + newName
-      val imageForToday = dayToString(Date.today)
-      val status = "Happy " + Date.today + "!"
-    }
-
-    case object ScheduleTime {
-      val repeatInterval = TimeUnit.MILLISECONDS.convert(1, TimeUnit.DAYS)
-      val startTime = Date.now.getTime()
-  }
-
 
     def nextColor(color: Color): Random[Color] = {
       //building blocks for the imageS, selects the next color to be used
@@ -99,62 +63,62 @@ class MyProcess {
       Image.circle(size).strokeWidth(1.0).strokeColor(color.spin(Angle(180))).fillColor(color)
     }
 
-
-    def dayImage(count: Int = 50, color: Color  = nextColor(Color.crimson).run, size: Double = scala.util.Random.nextInt(10), dayOfWeek: DayOfWeek): Random[Image] = {
-      //create an image based on day of week
-      count match {
-        case 0 => Random.always(Image.empty)
-        case n =>
-          val loop = coloredCircle(color, size)
-          val loops = nextColor(color) flatMap { c => dayImage(n - 1, c, size + scala.util.Random.nextInt(7), dayOfWeek) }
-          dayOfWeek match {
-            case DayOfWeek.SUNDAY => loops map { l => (loop beside loop beside loop) above (loop beside loop beside loop) above (loop beside loop beside loop) on l }
-            case DayOfWeek.MONDAY => loops map { l => loop above (loop beside loop beside loop) above loop on l }
-            case DayOfWeek.TUESDAY => loops map { l => (loop beside loop) below loop on l }
-            case DayOfWeek.WEDNESDAY => loops map { l => (loop beside loop beside loop beside loop beside loop) on l }
-            case DayOfWeek.THURSDAY => loops map { l => loop above (loop beside loop beside loop) above (loop beside loop beside loop beside loop beside loop) above (loop beside loop beside loop) above loop above (loop beside loop beside loop) above (loop beside loop beside loop beside loop beside loop) above (loop beside loop beside loop) above loop on l }
-            case DayOfWeek.FRIDAY => loops map { l => loop above (loop beside loop beside loop) above (loop beside loop beside loop beside loop beside loop) above (loop beside loop beside loop) above loop on l }
-            case DayOfWeek.SATURDAY => loops map { l => loop above (loop beside loop beside loop) above (loop beside loop beside loop) above (loop beside loop beside loop beside loop beside loop) above (loop beside loop beside loop) above (loop beside loop beside loop) above loop on l }
-          }
+    def today (numOfDay: Int): String = {
+      numOfDay match {
+        case 1 => "Sunday"
+        case 2 => "Monday"
+        case 3 => "Tuesday"
+        case 4 => "Wednesday"
+        case 5 => "Thursday"
+        case 6 => "Friday"
+        case 7 => "Saturday"
       }
     }
 
-    def dayToString(today: String): DayOfWeek = {
-      //convert day of week string to day of week ADT
-      today match {
-        case "Sunday" => DayOfWeek.SUNDAY
-        case "Monday" => DayOfWeek.MONDAY
-        case "Tuesday" => DayOfWeek.TUESDAY
-        case "Wednesday" => DayOfWeek.WEDNESDAY
-        case "Thursday" => DayOfWeek.THURSDAY
-        case "Friday" => DayOfWeek.FRIDAY
-        case "Saturday" => DayOfWeek.SATURDAY
-      }
+  def dayImage(count: Int, color: Color, size: Double, dayOfWeek: Int): Random[Image] = {
+    //create an image based on day of week
+    count match {
+      case 0 => Random.always(Image.empty)
+      case n =>
+        val loop = coloredCircle(color, size)
+        val loops = nextColor(color) flatMap { c => dayImage(n - 1, c, size + scala.util.Random.nextInt(7), dayOfWeek) }
+        dayOfWeek match {
+          case 1 => loops map { l => (loop beside loop beside loop) above (loop beside loop beside loop) above (loop beside loop beside loop) on l }
+          case 2 => loops map { l => loop above (loop beside loop beside loop) above loop on l }
+          case 3 => loops map { l => (loop beside loop) below loop on l }
+          case 4 => loops map { l => (loop beside loop beside loop beside loop beside loop) on l }
+          case 5 => loops map { l => loop above (loop beside loop beside loop) above (loop beside loop beside loop beside loop beside loop) above (loop beside loop beside loop) above loop above (loop beside loop beside loop) above (loop beside loop beside loop beside loop beside loop) above (loop beside loop beside loop) above loop on l }
+          case 6 => loops map { l => loop above (loop beside loop beside loop) above (loop beside loop beside loop beside loop beside loop) above (loop beside loop beside loop) above loop on l }
+          case 7 => loops map { l => loop above (loop beside loop beside loop) above (loop beside loop beside loop) above (loop beside loop beside loop beside loop beside loop) above (loop beside loop beside loop) above (loop beside loop beside loop) above loop on l }
+        }
     }
+  }
 
 
+  def filePath(): String = {
+    "/tmp/" + randomUUID().toString + ".png"
+  }
 
-/*    def createTodayImage(): Unit= {
-      //create image and write to file
-      dayImage(dayOfWeek = NewImage.imageForToday).run.write[Png](NewImage.filePath)
-    }
-*/
+  def status(today: String): String = {
+  "Happy " + today + "!"
+  }
+
+/*
     val task: TimerTask = new java.util.TimerTask {
       //queue up the tweet
       def run() = {
         implicit val ec = ExecutionContext.global
-        dayImage(dayOfWeek = NewImage.imageForToday).run.write[Png](NewImage.filePath)
         for {
           upload <- Twitter.restClient.uploadMediaFromPath(NewImage.filePath)
           tweet <- Twitter.restClient.createTweet(NewImage.status, media_ids = Seq(upload.media_id))
         } yield tweet
       }
     }
-
-    def scheduleTweet(task: TimerTask): Unit = {
+*/
+    def scheduleTweet(task: TimerTask, now: Calendar): Unit = {
     //schedule the tweet and repeat
     val t = new java.util.Timer()
-    t.schedule(task, Date.now.getTime(), TimeUnit.MILLISECONDS.convert(1, TimeUnit.DAYS))
+    t.schedule(task, now.getTime(), TimeUnit.MILLISECONDS.convert(1, TimeUnit.DAYS))
   }
 
   }

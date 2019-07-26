@@ -32,8 +32,9 @@ object Main {
     val createTweet  = new MyProcess
 
     val now = Calendar.getInstance()
-    val today = createTweet.today(createTweet.dayOfWeek(now))
-    println(today)
+    val imageForToday = createTweet.dayImage(50, createTweet.nextColor(Color.crimson).run, scala.util.Random.nextInt(10), createTweet.getNumOfDay(now))
+    val filePath = createTweet.filePath()
+    val writeImage = imageForToday.run.write[Png](filePath)
 
  }
 
