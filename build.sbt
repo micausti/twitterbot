@@ -29,7 +29,9 @@ val scalabridge = Project("scalabridge", file("."))
       |import org.json4s.JsonDSL._
      """.trim.stripMargin,
 
-    resolvers += Resolver.sonatypeRepo("releases"),
+    resolvers  ++= Seq (Resolver.sonatypeRepo("releases"),
+      "Artima Maven Repository" at "http://repo.artima.com/releases"),
+    
     
     libraryDependencies ++= Seq(
       // The library "cats" provides useful abstractions and utilities for doing functional programming in Scala
@@ -46,6 +48,8 @@ val scalabridge = Project("scalabridge", file("."))
       //scala-logging
       "com.typesafe.scala-logging" %% "scala-logging" % "3.9.2",
       "ch.qos.logback" % "logback-classic" % "1.2.3",
+      "org.scalactic" %% "scalactic" % "3.0.8",
+      
     ),
     // Some compiler flags which are good defaults
     scalacOptions ++= Seq(
