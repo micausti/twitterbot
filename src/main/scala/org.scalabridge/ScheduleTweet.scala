@@ -6,7 +6,7 @@ import java.util.concurrent.TimeUnit
 import com.typesafe.scalalogging.Logger
 
 
-class ScheduleTweet() {
+class ScheduleTweet {
 
   val logger = Logger("ScheduleTweet logger")
 
