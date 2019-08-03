@@ -49,6 +49,7 @@ val scalabridge = Project("scalabridge", file("."))
       "com.typesafe.scala-logging" %% "scala-logging" % "3.9.2",
       "ch.qos.logback" % "logback-classic" % "1.2.3",
       "org.scalactic" %% "scalactic" % "3.0.8",
+      "com.typesafe" % "config" % "1.3.2",
       
     ),
     // Some compiler flags which are good defaults
