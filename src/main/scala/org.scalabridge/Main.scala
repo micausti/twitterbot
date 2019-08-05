@@ -1,35 +1,34 @@
 package org.scalabridge
-import Utils.addThenDoubleIt
-import doodle.image._
-import doodle.image.syntax._
-import doodle.core._
-import doodle.java2d._
-import doodle.effect.Writer._
-import doodle.java2d.effect.Frame
-import doodle.random.Random
-import org.apache.commons.codec.binary.Base64
-import org.json4s._
-import org.json4s.JsonDSL._
 
-import scala.io.{BufferedSource, Source}
-import java.nio.file.{Files, Paths}
-import java.time.DayOfWeek
-import java.util.{Calendar, TimeZone, Timer, TimerTask}
-import java.util.UUID.randomUUID
+
+import java.util.{Calendar, TimeZone, Timer, TimerTask, Date}
 import java.util.concurrent.TimeUnit
 
-import com.danielasfregola.twitter4s.TwitterRestClient
-import com.danielasfregola.twitter4s.entities.{AccessToken, ConsumerToken}
-
-import scala.concurrent.ExecutionContext
 import com.typesafe.scalalogging._
 
 
 object Main {
 
   def main(args: Array[String]): Unit = {
-    val newProcess  = new MyProcess
-    newProcess.execute(args)
+
+    //find out the day of the week
+    //make the image for today
+    //Create the tweet for today with the correct status and file path
+    //Schedule the task
+
+    val logger = Logger("main logger")
+
+    logger.info("Starting Process" + Calendar.getInstance().getTime)
+    logger.info("Create Tweet for the Day")
+    val scheduleTweetForToday = new ScheduleTweet
+    //def dailyRun = scheduleTweetForToday.dailyRun
+    val now = Calendar.getInstance().getTime
+    val tomorrow =  TimeUnit.MILLISECONDS.convert(1, TimeUnit.DAYS)
+    //val tomorrow = 10000
+    scheduleTweetForToday.scheduleTask(new TweetTask().task, now, tomorrow)
+    logger.info("Tweet is scheduled to run at " + now + " with a repeat interval of " + tomorrow + " ms")
+    logger.info("Process is complete, awaiting next run")
+
  }
 
 }
