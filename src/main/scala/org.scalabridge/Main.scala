@@ -18,7 +18,7 @@ object Main {
 
     val logger = Logger("main logger")
 
-    logger.info("Starting Process")
+    logger.info("Starting Process" + Calendar.getInstance().getTime)
     logger.info("Create Tweet for the Day")
     val scheduleTweetForToday = new ScheduleTweet
     //def dailyRun = scheduleTweetForToday.dailyRun
