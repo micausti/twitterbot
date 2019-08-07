@@ -1,7 +1,0 @@
-language: scala
-
-matrix:
-include:
-    - scala: 2.12.8
-    env:
-    -ADOPTOPENJDK=8
