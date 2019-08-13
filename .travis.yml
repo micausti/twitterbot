@@ -1,7 +1,6 @@
+--- 
+include: 
+  ? "-scala"
+  : "2.12.8"
 language: scala
-
-matrix:
-include:
-    - scala: 2.12.8
-    env:
-    -ADOPTOPENJDK=8
+matrix: ~
