@@ -4,3 +4,13 @@ include:
   : "2.12.8"
 language: scala
 matrix: ~
+
+deploy:
+  provider: elasticbeanstalk
+  access_key_id:
+    secure: $EBACCESSKEY
+  secret_access_key:
+    secure: $EBSECRETKEY
+  region: "eu-west-2"
+  app: "Doodlebot"
+  env: "Doodlebot-env"
