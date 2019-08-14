@@ -13,7 +13,7 @@ default/
 .idea
 *.iml
 out
-resources/
+
 
 # Service
 *.log
