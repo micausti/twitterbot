@@ -14,3 +14,4 @@ deploy:
   region: "eu-west-2"
   app: "Doodlebot"
   env: "Doodlebot-env"
+  bucket_name: ""
