@@ -16,7 +16,7 @@ class ScheduleTweet {
   }
 
   def scheduleTask(task: TimerTask, time: Date, repeat: Long): Unit = {
-    logger.info("scheduling the run to start at")
+    logger.info("scheduling the run to start")
     val t = new java.util.Timer()
     t.schedule(task, time, repeat)
   }

@@ -11,6 +11,7 @@ import doodle.java2d._
 import doodle.effect.Writer._
 
 import scala.concurrent.ExecutionContext
+import com.typesafe.config.ConfigFactory
 
 class TweetTask() {
 
@@ -22,6 +23,18 @@ class TweetTask() {
     def run(): Unit = {
       implicit val ec = ExecutionContext.global
       val restClient = TwitterRestClient()
+
+
+      /*
+      val twconsumerkey = ConfigFactory.load().getString("twitter.consumer.key")
+      val twconsumersecret = ConfigFactory.load().getString("twitter.consumer.secret")
+      val twaccesskey = ConfigFactory.load().getString("twitter.access.key")
+      val twaccesssecret = ConfigFactory.load().getString("twitter.access.secret")
+      println(s"My twitter consumer key is $twconsumerkey")
+      println(s"My twitter consumer secret is $twconsumersecret")
+      println(s"My twitter access key is $twaccesskey")
+      println(s"My twitter access secret is $twaccesssecret")
+      */
       val today = new getDay().getDayOfWeek(new getDay().numOfDay())
       val makeToday = new MakeTweet
       val filePathForToday = makeToday.filePath()

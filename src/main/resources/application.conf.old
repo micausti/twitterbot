@@ -1,0 +1,17 @@
+
+twitter {
+  consumer {
+    key = sys.env("TWCONSUMERKEY")
+    secret = sys.env("TWCONSUMERSECRET")
+  }
+  access {
+    key = sys.env("TWACCESSKEY")
+    secret = sys.env("TWACCESSSECRET")
+  }
+}
+
+
+export TWITTER_CONSUMER_TOKEN_KEY='xRqd2I5VG5SPSepieROz3kYJb'
+export TWITTER_CONSUMER_TOKEN_SECRET='qN1NDrPOZzX9r4GkqBkj9ygBqcRdAywTufzHbMXHMGwTsv2SXD'
+export TWITTER_ACCESS_TOKEN_KEY='3317308574-5YEU79oQLaGd3goXUZU1evjKBqYGc7xmAT5n5S9'
+export TWITTER_ACCESS_TOKEN_SECRET='eL6qfelyTotz1tT0fXdiknnWWznsfqdKrkjmWozsaq3rP'
