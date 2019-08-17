@@ -5,7 +5,7 @@ include:
 language: scala
 jdk: openjdk8
 script:
-    - sbt scripted
+    - sbt ++$TRAVIS_SCALA_VERSION assembly
 matrix: ~
 
 deploy:
