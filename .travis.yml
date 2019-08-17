@@ -18,3 +18,5 @@ deploy:
   app: "Doodlebot"
   env: "Doodlebot-env"
   bucket_name: "elasticbeanstalk-eu-west-2-752000791052"
+  skip_cleanup: true
+  zip_file: "scalabridge-starter_2.12-0.1.0.jar"
