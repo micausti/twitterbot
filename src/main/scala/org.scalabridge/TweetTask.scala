@@ -2,7 +2,6 @@ package org.scalabridge
 
 import java.util.Calendar
 
-import com.danielasfregola.twitter4s.TwitterRestClient
 import com.typesafe.scalalogging.Logger
 import doodle.image._
 import doodle.image.syntax._
@@ -12,6 +11,10 @@ import doodle.effect.Writer._
 
 import scala.concurrent.ExecutionContext
 import com.typesafe.config.ConfigFactory
+import com.danielasfregola.twitter4s.{TwitterRestClient, entities}
+import com.danielasfregola.twitter4s.entities.{AccessToken, ConsumerToken}
+
+
 
 class TweetTask() {
 
@@ -22,19 +25,13 @@ class TweetTask() {
 
     def run(): Unit = {
       implicit val ec = ExecutionContext.global
-      val restClient = TwitterRestClient()
 
+      val consumerToken = ConsumerToken(key = sys.env("TWITTER_CONSUMER_TOKEN_KEY"), secret = sys.env("TWITTER_CONSUMER_TOKEN_SECRET"))
+      val accessToken = AccessToken(key = sys.env("TWITTER_ACCESS_TOKEN_KEY"), secret = sys.env("TWITTER_ACCESS_TOKEN_SECRET"))
+      val restClient = TwitterRestClient(consumerToken, accessToken)
+      logger.info("consumerToken"  + consumerToken)
+      logger.info("accessToken" + accessToken)
 
-      /*
-      val twconsumerkey = ConfigFactory.load().getString("twitter.consumer.key")
-      val twconsumersecret = ConfigFactory.load().getString("twitter.consumer.secret")
-      val twaccesskey = ConfigFactory.load().getString("twitter.access.key")
-      val twaccesssecret = ConfigFactory.load().getString("twitter.access.secret")
-      println(s"My twitter consumer key is $twconsumerkey")
-      println(s"My twitter consumer secret is $twconsumersecret")
-      println(s"My twitter access key is $twaccesskey")
-      println(s"My twitter access secret is $twaccesssecret")
-      */
       val today = new getDay().getDayOfWeek(new getDay().numOfDay())
       val makeToday = new MakeTweet
       val filePathForToday = makeToday.filePath()
